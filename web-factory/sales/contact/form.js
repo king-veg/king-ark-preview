@@ -1,0 +1,1 @@
+const form=document.querySelector("#wf-intake"),status=document.querySelector("#form-status");form.addEventListener("submit",e=>{e.preventDefault();status.textContent="現在は確認用です。送信先の接続後に受付を開始します。";});
