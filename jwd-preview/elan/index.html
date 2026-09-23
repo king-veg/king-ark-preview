@@ -20,10 +20,10 @@
       <a href="#concept">CONCEPT</a><a href="#style">STYLE</a><a href="#menu">MENU</a><a href="#salon">SALON</a><a href="#contact">CONTACT</a>
     </nav>
     <a class="header-cta" href="#reservation">RESERVATION</a>
-    <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span></button>
+    <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
   </header>
 
-  <div class="drawer" data-drawer hidden>
+  <div class="drawer" id="mobile-menu" data-drawer hidden>
     <a href="#concept">CONCEPT</a><a href="#style">STYLE</a><a href="#menu">MENU</a><a href="#salon">SALON</a><a href="#contact">CONTACT</a>
     <a class="drawer-cta" href="#reservation">WEBで予約する</a>
   </div>
@@ -37,7 +37,7 @@
         <a class="line-link" href="#concept">DISCOVER ÉLAN <span>↘</span></a>
       </div>
       <figure class="hero-visual reveal delay-1">
-        <img src="assets/hero.avif" alt="柔らかな自然光の中にいる日本人女性モデル" fetchpriority="high">
+        <picture><source srcset="assets/hero.avif" type="image/avif"><img src="assets/hero-hq.webp" width="1400" height="933" alt="柔らかな自然光の中にいる日本人女性モデル" fetchpriority="high" decoding="async"></picture>
         <figcaption><span>01</span><span>ÉLAN SIGNATURE</span></figcaption>
       </figure>
     </section>
@@ -62,15 +62,15 @@
       </div>
       <div class="style-grid section-shell">
         <article class="style-card reveal">
-          <img src="assets/natural.avif" alt="ナチュラルスタイルの日本人女性モデル" loading="lazy">
+          <picture><source srcset="assets/natural.avif" type="image/avif"><img src="assets/natural-hq.webp" width="900" height="1125" alt="ナチュラルスタイルの日本人女性モデル" loading="lazy" decoding="async"></picture>
           <div class="style-overlay"><span>01</span><h3>NATURAL</h3><p>肩の力が抜けた、やわらかな質感。</p></div>
         </article>
         <article class="style-card reveal delay-1">
-          <img src="assets/mode.avif" alt="モードなボブスタイルの日本人女性モデル" loading="lazy">
+          <picture><source srcset="assets/mode.avif" type="image/avif"><img src="assets/mode-hq.webp" width="900" height="1125" alt="モードなボブスタイルの日本人女性モデル" loading="lazy" decoding="async"></picture>
           <div class="style-overlay"><span>02</span><h3>MODE</h3><p>輪郭を引き締める、静かな存在感。</p></div>
         </article>
         <article class="style-card reveal delay-2">
-          <img src="assets/feminine.avif" alt="フェミニンなロングスタイルの日本人女性モデル" loading="lazy">
+          <picture><source srcset="assets/feminine.avif" type="image/avif"><img src="assets/feminine-hq.webp" width="900" height="1125" alt="フェミニンなロングスタイルの日本人女性モデル" loading="lazy" decoding="async"></picture>
           <div class="style-overlay"><span>03</span><h3>FEMININE</h3><p>光を含む、品のあるやわらかさ。</p></div>
         </article>
       </div>
