@@ -5,38 +5,46 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>KOKURYU ADMIN PREVIEW</title>
 <style>
-:root{--gold:#c79a4b;--red:#b7181d;--panel:rgba(7,7,7,.92)}
+:root{--gold:#c79a4b;--red:#b7181d}
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;overflow:hidden}
 #site{position:fixed;inset:0;width:100%;height:100%;border:0;background:#050505}
-.adminbar{position:fixed;z-index:10000;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px;background:rgba(5,5,5,.88);backdrop-filter:blur(12px);border:1px solid rgba(199,154,75,.38);border-radius:999px;box-shadow:0 10px 40px rgba(0,0,0,.45)}
-.brand{padding:0 10px;font-size:11px;letter-spacing:.16em;color:#d9bd87;white-space:nowrap}
-.room{appearance:none;border:0;background:transparent;color:#bbb;padding:8px 10px;border-radius:999px;font-weight:700;font-size:11px;cursor:pointer}
+.adminbar{position:fixed;z-index:10000;top:6px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px 5px;background:rgba(4,4,4,.88);backdrop-filter:blur(12px);border:1px solid rgba(199,154,75,.34);border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.4);max-width:calc(100vw - 12px);overflow-x:auto;scrollbar-width:none}
+.adminbar::-webkit-scrollbar{display:none}
+.room,.btn{appearance:none;border:0;white-space:nowrap;border-radius:999px;padding:7px 9px;font-weight:800;font-size:10px;cursor:pointer}
+.room{background:transparent;color:#bdbdbd}
 .room.on{background:#fff;color:#111}
-.actions{display:flex;gap:6px;margin-left:4px;padding-left:8px;border-left:1px solid rgba(255,255,255,.12)}
-.btn{border:1px solid rgba(255,255,255,.18);background:#171717;color:#fff;padding:8px 11px;border-radius:999px;font-weight:700;font-size:11px;cursor:pointer}
+.sep{width:1px;height:24px;background:rgba(255,255,255,.12);flex:0 0 auto}
+.btn{background:#161616;color:#fff;border:1px solid rgba(255,255,255,.15)}
 .btn.edit.on{background:var(--red);border-color:var(--red)}
-.btn.pub{background:linear-gradient(#d8ad62,#a9772a);color:#17100a;border-color:#e9c983}
-.drawer{position:fixed;z-index:10001;right:12px;top:64px;width:min(340px,calc(100vw - 24px));max-height:calc(100vh - 78px);overflow:auto;background:var(--panel);border:1px solid rgba(199,154,75,.35);border-radius:16px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.55);display:none}
-.drawer.open{display:block}
-.drawer h2{font-size:15px;margin:0 0 6px}
-.drawer p{font-size:12px;color:#aaa;line-height:1.6;margin:0 0 12px}
-.field{margin:10px 0}
-.field label{display:block;font-size:11px;color:#d7bd8a;margin-bottom:6px}
-.field input,.field textarea{width:100%;border:1px solid #333;background:#111;color:#fff;border-radius:10px;padding:10px;font-size:13px}
-.field textarea{min-height:76px;resize:vertical}
-.note{font-size:11px;color:#8f8f8f;padding:10px;border:1px dashed #383838;border-radius:10px}
-.save{width:100%;margin-top:12px;border:0;border-radius:10px;padding:11px;background:#fff;color:#111;font-weight:800;cursor:pointer}
-.tip{position:fixed;z-index:10002;left:12px;bottom:12px;background:rgba(0,0,0,.82);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:9px 11px;font-size:11px;color:#ddd;display:none}
+.btn.pub{background:linear-gradient(#d9ae62,#9e6f26);color:#160f08;border-color:#e8c681}
+.tip{position:fixed;z-index:10001;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(0,0,0,.82);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 12px;font-size:11px;color:#eee;display:none;pointer-events:none}
 .tip.show{display:block}
-@media(max-width:900px){.adminbar{left:8px;right:8px;transform:none;overflow-x:auto;justify-content:flex-start}.brand{display:none}.room,.btn{flex:0 0 auto}.drawer{top:58px}}
+.modalback{position:fixed;z-index:10002;inset:0;background:rgba(0,0,0,.24);display:none;align-items:flex-end;justify-content:center;padding:12px}
+.modalback.open{display:flex}
+.editor{width:min(560px,96vw);background:rgba(8,8,8,.97);border:1px solid rgba(199,154,75,.4);border-radius:16px;padding:12px;box-shadow:0 18px 55px rgba(0,0,0,.6)}
+.editorhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.editorhead strong{font-size:13px}
+.close{border:0;background:#202020;color:#fff;border-radius:999px;width:30px;height:30px;font-size:16px}
+.editor textarea{width:100%;min-height:72px;max-height:22vh;resize:none;background:#111;color:#fff;border:1px solid #343434;border-radius:10px;padding:10px;font-size:14px;line-height:1.5}
+.editrow{display:flex;gap:8px;margin-top:8px}
+.editrow button{flex:1;border:0;border-radius:10px;padding:10px;font-weight:800}
+.cancel{background:#222;color:#fff}
+.apply{background:#fff;color:#111}
+.bgbtn{position:fixed;z-index:10001;left:10px;top:54px;border:1px solid rgba(183,24,29,.7);background:rgba(183,24,29,.9);color:#fff;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800;display:none}
+.bgbtn.show{display:block}
+@media(max-width:900px) and (orientation:landscape){
+  .adminbar{left:7px;right:7px;transform:none;max-width:none}
+  .room,.btn{font-size:10px;padding:7px 8px}
+  .modalback{align-items:flex-end;padding:8px}
+  .editor{width:min(520px,92vw);padding:10px}
+  .editor textarea{min-height:58px;max-height:18vh}
+}
 </style>
 </head>
 <body>
 <iframe id="site" src="site.html" title="KOKURYU editable site"></iframe>
-
-<div class="adminbar" aria-label="KOKURYU 管理">
-  <div class="brand">KOKURYU ADMIN</div>
+<div class="adminbar">
   <button class="room on" data-room="top">HOME</button>
   <button class="room" data-room="price">PRICE</button>
   <button class="room" data-room="voice">VOICE</button>
@@ -44,158 +52,103 @@ html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-fam
   <button class="room" data-room="sns">SNS</button>
   <button class="room" data-room="map">MAP</button>
   <button class="room" data-room="booking">BOOKING</button>
-  <div class="actions">
-    <button class="btn edit" id="editBtn">編集</button>
-    <button class="btn" id="previewBtn">プレビュー</button>
-    <button class="btn pub" id="publishBtn">公開</button>
+  <span class="sep"></span>
+  <button class="btn edit" id="editBtn">編集</button>
+  <button class="btn" id="previewBtn">プレビュー</button>
+  <button class="btn pub" id="publishBtn">公開</button>
+</div>
+
+<button class="bgbtn" id="bgBtn">背景を変更</button>
+<input id="imagePicker" type="file" accept="image/*" hidden>
+<input id="bgPicker" type="file" accept="image/*" hidden>
+<div class="tip" id="tip">編集したい文字・画像をタップ</div>
+
+<div class="modalback" id="modal">
+  <div class="editor">
+    <div class="editorhead"><strong id="editorTitle">文字を編集</strong><button class="close" id="closeEditor">×</button></div>
+    <textarea id="textEditor"></textarea>
+    <div class="editrow"><button class="cancel" id="cancelEdit">キャンセル</button><button class="apply" id="applyEdit">反映</button></div>
   </div>
 </div>
 
-<aside class="drawer" id="drawer">
-  <h2 id="drawerTitle">HOME 編集</h2>
-  <p id="drawerDesc">今の公開画面をそのまま編集します。</p>
-  <div id="homeFields">
-    <div class="field"><label>左側 見出し</label><input id="leadInput" value="彫りの世界観を、肌に刻む。"></div>
-    <div class="field"><label>左側 サブコピー</label><textarea id="copyInput">伝統と現代が交わる、
-唯一無二の和彫りを。</textarea></div>
-    <div class="field"><label>トップ背景</label><input id="bgInput" type="file" accept="image/*"></div>
-    <div class="note">人物は後で実際の彫り師写真を受け取った時に、独立レイヤーとしてここへ追加する設計。</div>
-  </div>
-  <div id="genericFields" style="display:none">
-    <div class="note">この部屋は、表示中のページそのものを編集対象にする。編集モード中は文章をタップして直接編集、画像をタップして画像差し替え。</div>
-  </div>
-  <button class="save" id="saveBtn">下書きを保存</button>
-</aside>
-
-<input id="imagePicker" type="file" accept="image/*" hidden>
-<div class="tip" id="tip">編集モード：文章または画像を直接タップ</div>
-
 <script>
-const frame=document.getElementById("site");
-const drawer=document.getElementById("drawer");
-const editBtn=document.getElementById("editBtn");
-const tip=document.getElementById("tip");
-const imagePicker=document.getElementById("imagePicker");
+const frame=document.getElementById("site"),editBtn=document.getElementById("editBtn"),tip=document.getElementById("tip"),modal=document.getElementById("modal"),textEditor=document.getElementById("textEditor"),imagePicker=document.getElementById("imagePicker"),bgPicker=document.getElementById("bgPicker"),bgBtn=document.getElementById("bgBtn");
 const CURRENT_BG="https://d2jqrm6oza8nb6.cloudfront.net/datasets/a245aeb6-7b47-4216-9456-96b93535f841.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMGI3NWRhNWM3YWRkNzJkMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDQxMzc4OH0.Z5ZR1AjrehwXqwFQWQNJnesJDXfgIgViNW7CDif_Z7s";
-let editMode=false;
-let currentRoom="top";
-let pendingImage=null;
-
-function doc(){ return frame.contentDocument; }
-
-function applyCurrentPublicLook(){
-  const d=doc(); if(!d) return;
-  let s=d.getElementById("admin-current-public-bg");
-  if(!s){s=d.createElement("style");s.id="admin-current-public-bg";d.head.appendChild(s);}
-  const savedBg=localStorage.getItem("kokuryuAdminBg")||CURRENT_BG;
-  s.textContent='.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("'+savedBg+'") center top / cover no-repeat !important;}';
-  const saved=JSON.parse(localStorage.getItem("kokuryuAdminCopy")||"null");
-  if(saved){
-    const lead=d.querySelector(".hero-info__lead");
-    const copy=d.querySelector(".hero-info__copy");
-    if(lead) lead.textContent=saved.lead||"";
-    if(copy) copy.innerHTML=(saved.copy||"").split("\n").map(escapeHtml).join("<br>");
-    document.getElementById("leadInput").value=saved.lead||"";
-    document.getElementById("copyInput").value=saved.copy||"";
-  }
+let editMode=false,currentRoom="top",selectedText=null,pendingImage=null;
+function d(){return frame.contentDocument}
+function esc(v){return String(v).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function applyLook(){
+ const x=d();if(!x)return;
+ let s=x.getElementById("admin-current-public-bg");if(!s){s=x.createElement("style");s.id="admin-current-public-bg";x.head.appendChild(s)}
+ const b=localStorage.getItem("kokuryuAdminBg")||CURRENT_BG;
+ s.textContent='.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("'+b+'") center top / cover no-repeat !important;}';
+ const saved=JSON.parse(localStorage.getItem("kokuryuAdminCopy")||"null");
+ if(saved){const l=x.querySelector(".hero-info__lead"),c=x.querySelector(".hero-info__copy");if(l)l.textContent=saved.lead||"";if(c)c.innerHTML=(saved.copy||"").split("\n").map(esc).join("<br>")}
 }
-function escapeHtml(v){return String(v).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-
+function scope(){
+ const x=d();if(!x)return null;
+ return currentRoom==="top"?x.getElementById("page-top"):x.getElementById("page-"+currentRoom)
+}
 function gotoRoom(room){
-  currentRoom=room;
-  document.querySelectorAll(".room").forEach(b=>b.classList.toggle("on",b.dataset.room===room));
-  const d=doc(); if(!d)return;
-  const radio=d.getElementById("nav-"+room);
-  if(radio){radio.checked=true;radio.dispatchEvent(new Event("change",{bubbles:true}));}
-  document.getElementById("drawerTitle").textContent=room.toUpperCase()+" 編集";
-  document.getElementById("homeFields").style.display=room==="top"?"block":"none";
-  document.getElementById("genericFields").style.display=room==="top"?"none":"block";
+ currentRoom=room;
+ document.querySelectorAll(".room").forEach(b=>b.classList.toggle("on",b.dataset.room===room));
+ const x=d();if(x){const r=x.getElementById("nav-"+room);if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
+ bgBtn.classList.toggle("show",editMode&&room==="top");
+ if(editMode)setTimeout(markTargets,30);else clearTargets();
 }
-
-function clearEditing(){
-  const d=doc(); if(!d)return;
-  d.querySelectorAll("[data-admin-editable]").forEach(el=>{
-    el.removeAttribute("contenteditable");
-    el.removeAttribute("data-admin-editable");
-    el.style.outline="";
-    el.style.outlineOffset="";
-    el.style.cursor="";
-  });
+function clearTargets(){
+ const x=d();if(!x)return;
+ x.querySelectorAll("[data-admin-target]").forEach(el=>{
+   el.removeAttribute("data-admin-target");el.style.outline="";el.style.outlineOffset="";el.style.cursor="";
+ });
 }
-function enableEditing(){
-  const d=doc(); if(!d)return;
-  clearEditing();
-  const scope=currentRoom==="top"?d.getElementById("page-top"):d.getElementById("page-"+currentRoom);
-  if(!scope)return;
-  scope.querySelectorAll("h1,h2,h3,p,b,small,span,.value,.label").forEach(el=>{
-    if(el.children.length===0){
-      el.contentEditable="true";el.dataset.adminEditable="text";
-      el.style.outline="1px dashed rgba(199,154,75,.65)";
-      el.style.outlineOffset="3px";
-    }
-  });
-  scope.querySelectorAll("img").forEach(img=>{
-    img.dataset.adminEditable="image";
-    img.style.outline="2px dashed rgba(183,24,29,.75)";
-    img.style.outlineOffset="3px";
-    img.style.cursor="pointer";
-  });
-  scope.addEventListener("click",editableClick,true);
+function markTargets(){
+ clearTargets();const s=scope();if(!s)return;
+ s.querySelectorAll("h1,h2,h3,p,b,small,span,.value,.label").forEach(el=>{
+   if(el.children.length===0&&String(el.textContent||"").trim()){
+     el.dataset.adminTarget="text";el.style.outline="1px dashed rgba(199,154,75,.72)";el.style.outlineOffset="3px";el.style.cursor="pointer";
+   }
+ });
+ s.querySelectorAll("img").forEach(el=>{
+   el.dataset.adminTarget="image";el.style.outline="2px dashed rgba(183,24,29,.82)";el.style.outlineOffset="3px";el.style.cursor="pointer";
+ });
+ s.addEventListener("click",handleTarget,true);
 }
-function editableClick(e){
-  if(!editMode)return;
-  const el=e.target;
-  if(el && el.tagName==="IMG"){
-    e.preventDefault();e.stopPropagation();
-    pendingImage=el; imagePicker.click();
-  }
+function handleTarget(e){
+ if(!editMode)return;
+ const el=e.target;
+ if(!el||!el.dataset.adminTarget)return;
+ e.preventDefault();e.stopPropagation();
+ if(el.dataset.adminTarget==="image"){pendingImage=el;imagePicker.click();return}
+ selectedText=el;textEditor.value=el.innerText||el.textContent||"";document.getElementById("editorTitle").textContent="文字を編集";modal.classList.add("open");setTimeout(()=>textEditor.focus(),50);
 }
-imagePicker.addEventListener("change",()=>{
-  const f=imagePicker.files&&imagePicker.files[0]; if(!f||!pendingImage)return;
-  const r=new FileReader();r.onload=()=>{pendingImage.src=r.result;pendingImage=null;};r.readAsDataURL(f);
-});
-document.querySelectorAll(".room").forEach(b=>b.addEventListener("click",()=>{
-  gotoRoom(b.dataset.room);
-  if(editMode) setTimeout(enableEditing,40);
-}));
-editBtn.addEventListener("click",()=>{
-  editMode=!editMode;
-  editBtn.classList.toggle("on",editMode);
-  drawer.classList.toggle("open",editMode);
-  tip.classList.toggle("show",editMode);
-  if(editMode) enableEditing(); else clearEditing();
-});
-document.getElementById("previewBtn").addEventListener("click",()=>{
-  editMode=false;editBtn.classList.remove("on");drawer.classList.remove("open");tip.classList.remove("show");clearEditing();
-});
-document.getElementById("leadInput").addEventListener("input",e=>{
-  const el=doc()?.querySelector(".hero-info__lead"); if(el)el.textContent=e.target.value;
-});
-document.getElementById("copyInput").addEventListener("input",e=>{
-  const el=doc()?.querySelector(".hero-info__copy"); if(el)el.innerHTML=e.target.value.split("\n").map(escapeHtml).join("<br>");
-});
-document.getElementById("bgInput").addEventListener("change",e=>{
-  const f=e.target.files&&e.target.files[0]; if(!f)return;
-  const r=new FileReader();r.onload=()=>{
-    localStorage.setItem("kokuryuAdminBg",r.result);
-    applyCurrentPublicLook();
-  };r.readAsDataURL(f);
-});
-document.getElementById("saveBtn").addEventListener("click",()=>{
-  localStorage.setItem("kokuryuAdminCopy",JSON.stringify({
-    lead:document.getElementById("leadInput").value,
-    copy:document.getElementById("copyInput").value
-  }));
-  alert("下書きをこの端末に保存しました");
-});
-document.getElementById("publishBtn").addEventListener("click",()=>{
-  alert("公開ボタンは管理バックエンド接続後に本番サイトへ反映する仕様です。現在はプレビュー段階です。");
-});
-
-frame.addEventListener("load",()=>{
-  applyCurrentPublicLook();
-  gotoRoom("top");
-});
+function closeEditor(){modal.classList.remove("open");selectedText=null}
+document.querySelectorAll(".room").forEach(b=>b.onclick=()=>gotoRoom(b.dataset.room));
+editBtn.onclick=()=>{
+ editMode=!editMode;editBtn.classList.toggle("on",editMode);tip.classList.toggle("show",editMode);bgBtn.classList.toggle("show",editMode&&currentRoom==="top");
+ if(editMode)markTargets();else clearTargets();
+};
+document.getElementById("previewBtn").onclick=()=>{editMode=false;editBtn.classList.remove("on");tip.classList.remove("show");bgBtn.classList.remove("show");clearTargets();closeEditor()};
+document.getElementById("closeEditor").onclick=closeEditor;document.getElementById("cancelEdit").onclick=closeEditor;
+document.getElementById("applyEdit").onclick=()=>{
+ if(selectedText){selectedText.innerHTML=esc(textEditor.value).replace(/\n/g,"<br>")}
+ if(currentRoom==="top"){
+   const x=d(),lead=x.querySelector(".hero-info__lead"),copy=x.querySelector(".hero-info__copy");
+   localStorage.setItem("kokuryuAdminCopy",JSON.stringify({lead:lead?lead.innerText:"",copy:copy?copy.innerText:""}));
+ }
+ closeEditor();
+};
+imagePicker.onchange=()=>{
+ const f=imagePicker.files&&imagePicker.files[0];if(!f||!pendingImage)return;
+ const r=new FileReader();r.onload=()=>{pendingImage.src=r.result;pendingImage=null};r.readAsDataURL(f);
+};
+bgBtn.onclick=()=>bgPicker.click();
+bgPicker.onchange=()=>{
+ const f=bgPicker.files&&bgPicker.files[0];if(!f)return;
+ const r=new FileReader();r.onload=()=>{localStorage.setItem("kokuryuAdminBg",r.result);applyLook()};r.readAsDataURL(f);
+};
+document.getElementById("publishBtn").onclick=()=>alert("本番公開は管理バックエンド接続後に有効化します。今はプレビューです。");
+frame.addEventListener("load",()=>{applyLook();gotoRoom("top")});
 </script>
 </body>
 </html>
