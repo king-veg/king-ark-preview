@@ -12,15 +12,59 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505}
 <body>
 <iframe id="site" src="site.html" title="KOKURYU TATTOO STUDIO"></iframe>
 <script>
-const frame=document.getElementById('site');
-frame.addEventListener('load',()=>{
-  const d=frame.contentDocument;
+const DEFAULT_HOME_COPY = {
+  lead: "彫りの世界観を、肌に刻む。",
+  copy: "伝統と現代が交わる、\n唯一無二の和彫りを。"
+};
+
+function getHomeCopy(){
+  try{
+    const saved = JSON.parse(localStorage.getItem("kokuryuHomeCopy") || "null");
+    return {
+      lead: (saved && typeof saved.lead === "string") ? saved.lead : DEFAULT_HOME_COPY.lead,
+      copy: (saved && typeof saved.copy === "string") ? saved.copy : DEFAULT_HOME_COPY.copy
+    };
+  }catch(e){
+    return DEFAULT_HOME_COPY;
+  }
+}
+
+function applyTopSettings(){
+  const frame = document.getElementById("site");
+  const d = frame.contentDocument;
   if(!d) return;
-  const s=d.createElement('style');
-  s.id='kokuryu-home-bg-override';
-  s.textContent=`.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("https://d2jqrm6oza8nb6.cloudfront.net/datasets/a245aeb6-7b47-4216-9456-96b93535f841.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMGI3NWRhNWM3YWRkNzJkMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDQxMzc4OH0.Z5ZR1AjrehwXqwFQWQNJnesJDXfgIgViNW7CDif_Z7s") center top / cover no-repeat !important;}`;
-  d.head.appendChild(s);
-});
+
+  let s = d.getElementById("kokuryu-home-bg-override");
+  if(!s){
+    s = d.createElement("style");
+    s.id = "kokuryu-home-bg-override";
+    d.head.appendChild(s);
+  }
+  s.textContent = `.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("https://d2jqrm6oza8nb6.cloudfront.net/datasets/a245aeb6-7b47-4216-9456-96b93535f841.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMGI3NWRhNWM3YWRkNzJkMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDQxMzc4OH0.Z5ZR1AjrehwXqwFQWQNJnesJDXfgIgViNW7CDif_Z7s") center top / cover no-repeat !important;}`;
+
+  const cfg = getHomeCopy();
+  const lead = d.querySelector(".hero-info__lead");
+  const copy = d.querySelector(".hero-info__copy");
+
+  if(lead){
+    lead.id = "homeLeadText";
+    lead.dataset.editable = "home-lead";
+    lead.textContent = cfg.lead;
+  }
+
+  if(copy){
+    copy.id = "homeCopyText";
+    copy.dataset.editable = "home-copy";
+    copy.innerHTML = cfg.copy.split("\n").map(v=>v.replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))).join("<br>");
+  }
+}
+
+const frame = document.getElementById("site");
+frame.addEventListener("load", applyTopSettings);
+
+/* Future admin hook:
+   localStorage.setItem("kokuryuHomeCopy", JSON.stringify({lead:"...", copy:"..."}));
+   then reload the page. */
 </script>
 </body>
 </html>
