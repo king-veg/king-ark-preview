@@ -1439,6 +1439,25 @@ label.card,
   #page-top .map{left:64%;top:39%;width:14.5%}
   #page-top .booking{left:72%;top:8%;width:10%}
 }
+
+/* ===== v50 RIGHT-TO-ARTIST CARD FAN =====
+   Six cards form a cleaner fan from the right edge toward the artist zone, without covering the artist. */
+@media (orientation:landscape){
+  #page-top .booking{left:84%;top:11%;width:10.5%;--rot:7deg;transform:rotate(7deg)}
+  #page-top .sns{left:78%;top:31%;width:14.2%;--rot:-4deg;transform:rotate(-4deg)}
+  #page-top .map{left:69%;top:48%;width:13.8%;--rot:7deg;transform:rotate(7deg)}
+  #page-top .gallery{left:57%;top:28%;width:19.8%;--rot:0deg;transform:rotate(0deg)}
+  #page-top .price{left:49%;top:48%;width:13.5%;--rot:-5deg;transform:rotate(-5deg)}
+  #page-top .voice{left:41%;top:47%;width:13.8%;--rot:-6deg;transform:rotate(-6deg)}
+}
+@media (orientation:landscape) and (max-height:650px){
+  #page-top .booking{left:84%;top:8%;width:10%}
+  #page-top .sns{left:78%;top:27%;width:13.5%}
+  #page-top .map{left:69%;top:43%;width:13%}
+  #page-top .gallery{left:57%;top:23%;width:18.8%}
+  #page-top .price{left:49%;top:43%;width:12.8%}
+  #page-top .voice{left:41%;top:42%;width:13%}
+}
 </style>
 </head>
 <body>
