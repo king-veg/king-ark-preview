@@ -1458,6 +1458,31 @@ label.card,
   #page-top .price{left:49%;top:43%;width:12.8%}
   #page-top .voice{left:41%;top:42%;width:13%}
 }
+
+/* ===== v51 LOCKED HOME BASE =====
+   Only requested structural changes: bottom nav + monochrome background.
+   Restore the six approved cards exactly; no copy/image/link changes. */
+#page-top .bg{filter:grayscale(1);}
+
+/* move only the HOME header to the bottom */
+#page-top .site-header{
+  position:fixed!important;
+  left:0!important;right:0!important;top:auto!important;bottom:0!important;
+  z-index:100!important;
+}
+#page-top .stage{
+  padding-bottom:72px!important;
+}
+
+/* restore approved six-card geometry */
+@media (orientation:landscape){
+  #page-top .price{left:23%;top:58%;width:15.2%;--rot:-7deg;transform:rotate(-7deg)}
+  #page-top .voice{left:7.5%;top:58%;width:16.8%;--rot:-8deg;transform:rotate(-8deg)}
+  #page-top .gallery{left:36%;top:37%;width:26.5%;--rot:0deg;transform:rotate(0deg)}
+  #page-top .sns{left:79%;top:43%;width:18.5%;--rot:-6deg;transform:rotate(-6deg)}
+  #page-top .map{left:63%;top:60%;width:15.8%;--rot:10deg;transform:rotate(10deg)}
+  #page-top .booking{left:71%;top:22%;width:11.2%;--rot:8deg;transform:rotate(8deg)}
+}
 </style>
 </head>
 <body>
