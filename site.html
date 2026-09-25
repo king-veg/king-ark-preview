@@ -1384,6 +1384,41 @@ label.card,
   #page-top .map{left:64%;top:51%;width:15%}
   #page-top .booking{left:72%;top:16%;width:10.8%}
 }
+
+/* ===== v48 SAFARI LANDSCAPE FIT =====
+   Fit the complete HOME composition inside short mobile/tablet landscape viewports. */
+@media (orientation:landscape) and (max-height:700px){
+  #page-top .stage{
+    height:calc(100svh - 58px);
+    min-height:0;
+  }
+  #page-top .site-header{
+    height:58px;
+    min-height:58px;
+  }
+  #page-top .shell{
+    width:min(1500px,calc(100vw - 12px));
+    height:calc(100svh - 66px);
+    transform:scale(.84);
+    transform-origin:center center;
+  }
+  #page-top .price{left:23%;top:43%;width:14.2%}
+  #page-top .voice{left:7%;top:43%;width:15.3%}
+  #page-top .gallery{left:42%;top:24%;width:23.5%}
+  #page-top .sns{left:80%;top:31%;width:16.4%}
+  #page-top .map{left:64%;top:44%;width:14.5%}
+  #page-top .booking{left:72%;top:13%;width:10.3%}
+  #page-top .hero-info__lead{font-size:clamp(16px,2.2vw,28px)}
+  #page-top .hero-info__copy{font-size:clamp(18px,2.6vw,34px)}
+}
+@media (orientation:landscape) and (max-height:500px){
+  #page-top .shell{transform:scale(.76)}
+  #page-top .price,#page-top .voice{top:39%}
+  #page-top .gallery{top:20%}
+  #page-top .sns{top:27%}
+  #page-top .map{top:40%}
+  #page-top .booking{top:10%}
+}
 </style>
 </head>
 <body>
