@@ -1419,6 +1419,26 @@ label.card,
   #page-top .map{top:40%}
   #page-top .booking{top:10%}
 }
+
+/* ===== v49 REAL iOS SAFARI LANDSCAPE FIT =====
+   Safari browser chrome leaves a very short visual viewport; compose HOME against that viewport. */
+@media (orientation:landscape) and (max-height:650px){
+  #page-top{overflow:hidden!important}
+  #page-top .stage{height:100svh!important;min-height:0!important;overflow:hidden!important}
+  #page-top .shell{
+    position:absolute!important;
+    left:50%!important;top:50%!important;
+    width:1180px!important;height:560px!important;
+    transform:translate(-50%,-50%) scale(min(0.78, calc((100vw - 8px)/1180), calc((100svh - 8px)/560)))!important;
+    transform-origin:center!important;
+  }
+  #page-top .price{left:22%;top:38%;width:14%}
+  #page-top .voice{left:6%;top:38%;width:15%}
+  #page-top .gallery{left:42%;top:17%;width:23%}
+  #page-top .sns{left:80%;top:25%;width:16%}
+  #page-top .map{left:64%;top:39%;width:14.5%}
+  #page-top .booking{left:72%;top:8%;width:10%}
+}
 </style>
 </head>
 <body>
