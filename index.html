@@ -14,20 +14,36 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505}
 <script>
 const DEFAULT_SITE_IDENTITY={studio:"HORIYUME",artistJa:"彫夢",artistEn:"HORIYUME"};
 const DEFAULT_HOME_COPY={lead:"彫りの世界観を、肌に刻む。",copy:"伝統と現代が交わる、\n唯一無二の和彫りを。"};
+const HOME_ASSETS={background:"assets/horiyume-bg.webp",artist:"assets/horiyume-artist.webp"};
 function readJSON(key,fallback){try{return Object.assign({},fallback,JSON.parse(localStorage.getItem(key)||"null")||{})}catch(e){return fallback}}
 function getHomeCopy(){return readJSON("horiyumeHomeCopy",DEFAULT_HOME_COPY)}
 function getIdentity(){return readJSON("horiyumeSiteIdentity",DEFAULT_SITE_IDENTITY)}
+function ensureHomeLayers(d){
+ const top=d.getElementById("page-top")||d.querySelector("main")||d.body;
+ if(!d.getElementById("horiyume-layer-style")){
+  const s=d.createElement("style");s.id="horiyume-layer-style";s.textContent=`
+  #page-top{position:relative!important;isolation:isolate;overflow:hidden!important;background:#080808!important}
+  #horiyume-bg-layer{position:absolute;inset:0;z-index:0;background:url('${HOME_ASSETS.background}') center center/cover no-repeat;filter:grayscale(1) contrast(1.06) brightness(.58);transform:scale(1.015);pointer-events:none}
+  #horiyume-bg-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.22) 0%,rgba(0,0,0,.08) 46%,rgba(0,0,0,.38) 100%);pointer-events:none}
+  #horiyume-artist-layer{position:absolute;z-index:18;left:2.2%;bottom:0;width:min(43vw,650px);height:82%;object-fit:contain;object-position:left bottom;filter:grayscale(1) contrast(1.04);pointer-events:none}
+  #horiyume-artist-badge{position:absolute;z-index:46;left:7%;bottom:15%;font-family:serif;color:#fff;font-size:clamp(10px,1vw,16px);letter-spacing:.14em;text-shadow:0 2px 12px #000;pointer-events:none;white-space:nowrap}
+  #page-top>*:not(#horiyume-bg-layer):not(#horiyume-bg-shade):not(#horiyume-artist-layer):not(#horiyume-artist-badge){position:relative;z-index:30}
+  @media(max-width:800px){#horiyume-artist-layer{left:-7%;width:62vw;height:72%;bottom:3%}#horiyume-artist-badge{left:5%;bottom:13%;font-size:10px}}
+  `;d.head.appendChild(s);
+ }
+ if(!d.getElementById("horiyume-bg-layer")){const x=d.createElement("div");x.id="horiyume-bg-layer";top.prepend(x)}
+ if(!d.getElementById("horiyume-bg-shade")){const x=d.createElement("div");x.id="horiyume-bg-shade";top.insertBefore(x,top.children[1]||null)}
+ if(!d.getElementById("horiyume-artist-layer")){const x=d.createElement("img");x.id="horiyume-artist-layer";x.src=HOME_ASSETS.artist;x.alt="";x.decoding="async";x.fetchPriority="high";top.appendChild(x)}
+ return top;
+}
 function applyTopSettings(){
  const frame=document.getElementById("site"),d=frame.contentDocument;if(!d)return;
- const id=getIdentity();
- d.title=`Artist — ${id.artistJa} / ${id.artistEn}`;
+ const id=getIdentity();d.title=`Artist — ${id.artistJa} / ${id.artistEn}`;
  d.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&el.textContent){el.textContent=el.textContent.replace(/KOKURYU TATTOO STUDIO/g,id.studio).replace(/KOKURYU/g,id.studio)}});
  const cfg=getHomeCopy(),lead=d.querySelector(".hero-info__lead"),copy=d.querySelector(".hero-info__copy");
  if(lead){lead.id="homeLeadText";lead.dataset.editable="home-lead";lead.textContent=cfg.lead}
  if(copy){copy.id="homeCopyText";copy.dataset.editable="home-copy";copy.innerHTML=cfg.copy.split("\n").map(v=>v.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))).join("<br>")}
- let badge=d.getElementById("horiyume-artist-badge");
- if(!badge){badge=d.createElement("div");badge.id="horiyume-artist-badge";badge.style.cssText="position:absolute;z-index:45;left:6.5%;bottom:15%;font-family:serif;color:#fff;font-size:clamp(10px,1vw,16px);letter-spacing:.14em;text-shadow:0 2px 12px #000;pointer-events:none";const top=d.getElementById("page-top")||d.body;top.appendChild(badge)}
- badge.textContent=`Artist — ${id.artistJa} / ${id.artistEn}`;
+ const top=ensureHomeLayers(d);let badge=d.getElementById("horiyume-artist-badge");if(!badge){badge=d.createElement("div");badge.id="horiyume-artist-badge";top.appendChild(badge)}badge.textContent=`Artist — ${id.artistJa} / ${id.artistEn}`;
 }
 const frame=document.getElementById("site");frame.addEventListener("load",applyTopSettings);
 </script>
