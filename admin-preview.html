@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>KOKURYU ADMIN PREVIEW</title>
+<title>HORIYUME ADMIN PREVIEW</title>
 <style>
 :root{--gold:#c79a4b;--red:#b7181d}
 *{box-sizing:border-box}
@@ -43,7 +43,7 @@ html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-fam
 </style>
 </head>
 <body>
-<iframe id="site" src="site.html" title="KOKURYU editable site"></iframe>
+<iframe id="site" src="site.html" title="HORIYUME editable site"></iframe>
 <div class="adminbar">
   <button class="room on" data-room="top">HOME</button>
   <button class="room" data-room="price">PRICE</button>
@@ -71,19 +71,27 @@ html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-fam
   </div>
 </div>
 
+<script src="map-sync.js"></script>
 <script>
 const frame=document.getElementById("site"),editBtn=document.getElementById("editBtn"),tip=document.getElementById("tip"),modal=document.getElementById("modal"),textEditor=document.getElementById("textEditor"),imagePicker=document.getElementById("imagePicker"),bgPicker=document.getElementById("bgPicker"),bgBtn=document.getElementById("bgBtn");
 const CURRENT_BG="https://d2jqrm6oza8nb6.cloudfront.net/datasets/a245aeb6-7b47-4216-9456-96b93535f841.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMGI3NWRhNWM3YWRkNzJkMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDQxMzc4OH0.Z5ZR1AjrehwXqwFQWQNJnesJDXfgIgViNW7CDif_Z7s";
 let editMode=false,currentRoom="top",selectedText=null,pendingImage=null;
 function d(){return frame.contentDocument}
 function esc(v){return String(v).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function applyIdentity(){
+ const x=d();if(!x)return;
+ x.title="Artist — 彫夢 / HORIYUME";
+ x.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&el.textContent){el.textContent=el.textContent.replace(/KOKURYU TATTOO STUDIO/g,"HORIYUME").replace(/KOKURYU/g,"HORIYUME")}});
+}
 function applyLook(){
  const x=d();if(!x)return;
+ applyIdentity();
  let s=x.getElementById("admin-current-public-bg");if(!s){s=x.createElement("style");s.id="admin-current-public-bg";x.head.appendChild(s)}
  const b=localStorage.getItem("kokuryuAdminBg")||CURRENT_BG;
  s.textContent='.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("'+b+'") center top / cover no-repeat !important;}';
  const saved=JSON.parse(localStorage.getItem("kokuryuAdminCopy")||"null");
  if(saved){const l=x.querySelector(".hero-info__lead"),c=x.querySelector(".hero-info__copy");if(l)l.textContent=saved.lead||"";if(c)c.innerHTML=(saved.copy||"").split("\n").map(esc).join("<br>")}
+ if(window.HoriyumeStore)window.HoriyumeStore.applyToFrame(frame);
 }
 function scope(){
  const x=d();if(!x)return null;
@@ -93,6 +101,7 @@ function gotoRoom(room){
  currentRoom=room;
  document.querySelectorAll(".room").forEach(b=>b.classList.toggle("on",b.dataset.room===room));
  const x=d();if(x){const r=x.getElementById("nav-"+room);if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
+ if(room==="map"&&window.HoriyumeStore)window.HoriyumeStore.applyToFrame(frame);
  bgBtn.classList.toggle("show",editMode&&room==="top");
  if(editMode)setTimeout(markTargets,30);else clearTargets();
 }
@@ -123,6 +132,19 @@ function handleTarget(e){
  selectedText=el;textEditor.value=el.innerText||el.textContent||"";document.getElementById("editorTitle").textContent="文字を編集";modal.classList.add("open");setTimeout(()=>textEditor.focus(),50);
 }
 function closeEditor(){modal.classList.remove("open");selectedText=null}
+function persistMapSettings(){
+ const x=d();if(!x||!window.HoriyumeStore)return;
+ const address=x.getElementById("addressText"),hours=x.getElementById("hoursText"),holiday=x.getElementById("holidayText");
+ const clean=(el,placeholder)=>{const v=String(el&&el.innerText||"").trim();return(!v||v===placeholder||v.includes("未登録"))?"":v};
+ const addressValue=clean(address,"住所未登録");
+ window.HoriyumeStore.write({
+   address:addressValue,
+   businessHours:clean(hours,"営業時間未登録"),
+   holiday:clean(holiday,"定休日未登録"),
+   mapQuery:addressValue
+ });
+ window.HoriyumeStore.applyToFrame(frame);
+}
 document.querySelectorAll(".room").forEach(b=>b.onclick=()=>gotoRoom(b.dataset.room));
 editBtn.onclick=()=>{
  editMode=!editMode;editBtn.classList.toggle("on",editMode);tip.classList.toggle("show",editMode);bgBtn.classList.toggle("show",editMode&&currentRoom==="top");
@@ -136,6 +158,7 @@ document.getElementById("applyEdit").onclick=()=>{
    const x=d(),lead=x.querySelector(".hero-info__lead"),copy=x.querySelector(".hero-info__copy");
    localStorage.setItem("kokuryuAdminCopy",JSON.stringify({lead:lead?lead.innerText:"",copy:copy?copy.innerText:""}));
  }
+ if(currentRoom==="map")persistMapSettings();
  closeEditor();
 };
 imagePicker.onchange=()=>{
