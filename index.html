@@ -15,17 +15,18 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505}
 <script src="horiyume-runtime.js"></script>
 <script>
 const frame=document.getElementById('site');
-function applyPublished(){
-  const cfg=window.HoriyumeRuntime?HoriyumeRuntime.published():null;
-  if(window.HoriyumeRuntime)HoriyumeRuntime.applyToFrame(frame,cfg);
-  if(window.HoriyumeStore)HoriyumeStore.applyToFrame(frame);
+let applying=false;
+async function applyPublished(){
+  if(applying)return;applying=true;
+  try{
+    const cfg=await HoriyumeRuntime.fetchPublished();
+    HoriyumeRuntime.applyToFrame(frame,cfg);
+    if(window.HoriyumeStore)HoriyumeStore.applyToFrame(frame);
+  }finally{applying=false}
 }
 frame.addEventListener('load',applyPublished);
 window.addEventListener('focus',applyPublished);
-window.addEventListener('storage',e=>{
-  if(!window.HoriyumeRuntime)return;
-  if(e.key===HoriyumeRuntime.PUBLISHED_KEY)applyPublished();
-});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')applyPublished()});
 </script>
 </body>
 </html>
