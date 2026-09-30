@@ -2,6 +2,8 @@
   const API_BASE='https://horiyume-site-api.mutenrosi-01.workers.dev';
   const DRAFT_KEY='horiyumeDraftConfigV3';
   const PUBLISHED_KEY='horiyumePublishedConfigV3';
+  const LEGACY_DRAFT_KEY='horiyumeDraftConfigV2';
+  const LEGACY_PUBLISHED_KEY='horiyumePublishedConfigV2';
   const STORE_KEY='horiyumeStoreSettings';
   const SESSION_PIN_KEY='horiyumeAdminSessionPinV1';
   const DEFAULTS={
@@ -13,10 +15,26 @@
   const TEXT_SELECTOR='h1,h2,h3,p,b,small,span,.value,.label';
   function clone(v){return JSON.parse(JSON.stringify(v));}
   function merge(base,next){const out=clone(base);next=next||{};Object.keys(next).forEach(k=>{if(next[k]&&typeof next[k]==='object'&&!Array.isArray(next[k])&&out[k]&&typeof out[k]==='object'&&!Array.isArray(out[k]))out[k]=Object.assign({},out[k],next[k]);else out[k]=next[k]});return out}
-  function read(key){try{return merge(DEFAULTS,JSON.parse(localStorage.getItem(key)||'null')||{})}catch(e){return clone(DEFAULTS)}}
+  function raw(key){try{return localStorage.getItem(key)}catch(e){return null}}
+  function read(key){try{return merge(DEFAULTS,JSON.parse(raw(key)||'null')||{})}catch(e){return clone(DEFAULTS)}}
   function write(key,cfg){const v=merge(DEFAULTS,cfg||{});try{localStorage.setItem(key,JSON.stringify(v))}catch(e){}return v}
-  function draft(){const raw=localStorage.getItem(DRAFT_KEY);return raw?read(DRAFT_KEY):published()}
-  function published(){return read(PUBLISHED_KEY)}
+  function legacySeed(){
+    let v=clone(DEFAULTS);
+    try{const s=JSON.parse(raw(STORE_KEY)||'null');if(s&&typeof s==='object')v.storeSettings=Object.assign({},v.storeSettings,s)}catch(e){}
+    try{const c=JSON.parse(raw('horiyumeHomeCopy')||'null');if(c&&typeof c==='object')v.homeCopy=Object.assign({},v.homeCopy,c)}catch(e){}
+    try{const i=JSON.parse(raw('horiyumeSiteIdentity')||'null');if(i&&typeof i==='object')v.identity=Object.assign({},v.identity,i)}catch(e){}
+    return v;
+  }
+  function published(){
+    if(raw(PUBLISHED_KEY)!==null)return read(PUBLISHED_KEY);
+    if(raw(LEGACY_PUBLISHED_KEY)!==null){const v=read(LEGACY_PUBLISHED_KEY);write(PUBLISHED_KEY,v);return v}
+    const v=legacySeed();write(PUBLISHED_KEY,v);return v;
+  }
+  function draft(){
+    if(raw(DRAFT_KEY)!==null)return read(DRAFT_KEY);
+    if(raw(LEGACY_DRAFT_KEY)!==null){const v=read(LEGACY_DRAFT_KEY);write(DRAFT_KEY,v);return v}
+    return published();
+  }
   function saveDraft(cfg){return write(DRAFT_KEY,cfg)}
   function publishLocal(cfg){const saved=write(PUBLISHED_KEY,cfg||draft());write(DRAFT_KEY,saved);return saved}
   async function api(path,opt={}){
@@ -39,7 +57,6 @@
   async function submitInquiry(payload){return api('/api/inquiry',{method:'POST',body:JSON.stringify(payload)})}
   function sessionPin(){return sessionStorage.getItem(SESSION_PIN_KEY)||''}
   function clearSessionPin(){sessionStorage.removeItem(SESSION_PIN_KEY)}
-
   function roomRoot(doc,room){return room==='top'?doc.getElementById('page-top'):doc.getElementById('page-'+room)}
   function textTargets(root){return root?Array.from(root.querySelectorAll(TEXT_SELECTOR)).filter(el=>el.children.length===0&&String(el.textContent||'').trim()):[]}
   function imageTargets(root){return root?Array.from(root.querySelectorAll('img')):[]}
