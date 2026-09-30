@@ -3,175 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>HORIYUME ADMIN PREVIEW</title>
+<title>HORIYUME ADMIN</title>
 <style>
 :root{--gold:#c79a4b;--red:#b7181d}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;overflow:hidden}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;overflow:hidden}
 #site{position:fixed;inset:0;width:100%;height:100%;border:0;background:#050505}
-.adminbar{position:fixed;z-index:10000;top:6px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px 5px;background:rgba(4,4,4,.88);backdrop-filter:blur(12px);border:1px solid rgba(199,154,75,.34);border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.4);max-width:calc(100vw - 12px);overflow-x:auto;scrollbar-width:none}
-.adminbar::-webkit-scrollbar{display:none}
-.room,.btn{appearance:none;border:0;white-space:nowrap;border-radius:999px;padding:7px 9px;font-weight:800;font-size:10px;cursor:pointer}
-.room{background:transparent;color:#bdbdbd}
-.room.on{background:#fff;color:#111}
-.sep{width:1px;height:24px;background:rgba(255,255,255,.12);flex:0 0 auto}
-.btn{background:#161616;color:#fff;border:1px solid rgba(255,255,255,.15)}
-.btn.edit.on{background:var(--red);border-color:var(--red)}
-.btn.pub{background:linear-gradient(#d9ae62,#9e6f26);color:#160f08;border-color:#e8c681}
-.tip{position:fixed;z-index:10001;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(0,0,0,.82);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 12px;font-size:11px;color:#eee;display:none;pointer-events:none}
-.tip.show{display:block}
-.modalback{position:fixed;z-index:10002;inset:0;background:rgba(0,0,0,.24);display:none;align-items:flex-end;justify-content:center;padding:12px}
-.modalback.open{display:flex}
-.editor{width:min(560px,96vw);background:rgba(8,8,8,.97);border:1px solid rgba(199,154,75,.4);border-radius:16px;padding:12px;box-shadow:0 18px 55px rgba(0,0,0,.6)}
-.editorhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
-.editorhead strong{font-size:13px}
-.close{border:0;background:#202020;color:#fff;border-radius:999px;width:30px;height:30px;font-size:16px}
-.editor textarea{width:100%;min-height:72px;max-height:22vh;resize:none;background:#111;color:#fff;border:1px solid #343434;border-radius:10px;padding:10px;font-size:14px;line-height:1.5}
-.editrow{display:flex;gap:8px;margin-top:8px}
-.editrow button{flex:1;border:0;border-radius:10px;padding:10px;font-weight:800}
-.cancel{background:#222;color:#fff}
-.apply{background:#fff;color:#111}
-.bgbtn{position:fixed;z-index:10001;left:10px;top:54px;border:1px solid rgba(183,24,29,.7);background:rgba(183,24,29,.9);color:#fff;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800;display:none}
-.bgbtn.show{display:block}
-@media(max-width:900px) and (orientation:landscape){
-  .adminbar{left:7px;right:7px;transform:none;max-width:none}
-  .room,.btn{font-size:10px;padding:7px 8px}
-  .modalback{align-items:flex-end;padding:8px}
-  .editor{width:min(520px,92vw);padding:10px}
-  .editor textarea{min-height:58px;max-height:18vh}
-}
+.adminbar{position:fixed;z-index:10000;top:6px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px 5px;background:rgba(4,4,4,.9);backdrop-filter:blur(12px);border:1px solid rgba(199,154,75,.34);border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.4);max-width:calc(100vw - 12px);overflow-x:auto;scrollbar-width:none}.adminbar::-webkit-scrollbar{display:none}
+.room,.btn{appearance:none;border:0;white-space:nowrap;border-radius:999px;padding:7px 9px;font-weight:800;font-size:10px;cursor:pointer}.room{background:transparent;color:#bdbdbd}.room.on{background:#fff;color:#111}.sep{width:1px;height:24px;background:rgba(255,255,255,.12);flex:0 0 auto}.btn{background:#161616;color:#fff;border:1px solid rgba(255,255,255,.15)}.btn.edit.on{background:var(--red);border-color:var(--red)}.btn.pub{background:linear-gradient(#d9ae62,#9e6f26);color:#160f08;border-color:#e8c681}
+.tip{position:fixed;z-index:10001;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(0,0,0,.82);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 12px;font-size:11px;color:#eee;display:none;pointer-events:none}.tip.show{display:block}
+.action{position:fixed;z-index:10001;left:10px;top:54px;border:1px solid rgba(183,24,29,.7);background:rgba(183,24,29,.92);color:#fff;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800;display:none}.action.show{display:block}#galleryAddBtn{top:94px}#bookingMailBtn{top:134px}
+.modalback{position:fixed;z-index:10002;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;justify-content:center;padding:12px}.modalback.open{display:flex}.editor{width:min(560px,96vw);background:rgba(8,8,8,.98);border:1px solid rgba(199,154,75,.4);border-radius:16px;padding:12px;box-shadow:0 18px 55px rgba(0,0,0,.6)}.editorhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}.editorhead strong{font-size:13px}.close{border:0;background:#202020;color:#fff;border-radius:999px;width:30px;height:30px;font-size:16px}.editor textarea{width:100%;min-height:72px;max-height:22vh;resize:none;background:#111;color:#fff;border:1px solid #343434;border-radius:10px;padding:10px;font-size:14px;line-height:1.5}.editrow{display:flex;gap:8px;margin-top:8px}.editrow button{flex:1;border:0;border-radius:10px;padding:10px;font-weight:800}.cancel{background:#222;color:#fff}.apply{background:#fff;color:#111}
+.lock{position:fixed;z-index:20000;inset:0;background:radial-gradient(circle at 50% 20%,#1d1710,#050505 55%);display:grid;place-items:center;padding:20px}.lock.hide{display:none}.lockbox{width:min(420px,94vw);padding:26px;border:1px solid rgba(199,154,75,.45);background:rgba(5,5,5,.96);border-radius:20px;text-align:center}.lockbox h1{font-size:22px;margin:0 0 8px}.lockbox p{color:#bbb;font-size:13px;line-height:1.7}.lockbox input{width:100%;padding:14px;background:#111;border:1px solid #333;border-radius:10px;color:#fff;font-size:20px;text-align:center;letter-spacing:.35em}.lockbox button{margin-top:12px;width:100%;padding:12px;border:0;border-radius:10px;background:#fff;font-weight:900}.lockmsg{min-height:20px;color:#f4b0b0;font-size:12px;margin-top:8px}
+@media(max-width:900px){.adminbar{left:7px;right:7px;transform:none;max-width:none}.room,.btn{font-size:10px;padding:7px 8px}.modalback{align-items:flex-end;padding:8px}.editor{width:min(520px,96vw);padding:10px}.editor textarea{min-height:58px;max-height:18vh}}
 </style>
 </head>
 <body>
 <iframe id="site" src="site.html" title="HORIYUME editable site"></iframe>
 <div class="adminbar">
-  <button class="room on" data-room="top">HOME</button>
-  <button class="room" data-room="price">PRICE</button>
-  <button class="room" data-room="voice">VOICE</button>
-  <button class="room" data-room="gallery">GALLERY</button>
-  <button class="room" data-room="sns">SNS</button>
-  <button class="room" data-room="map">MAP</button>
-  <button class="room" data-room="booking">BOOKING</button>
-  <span class="sep"></span>
-  <button class="btn edit" id="editBtn">編集</button>
-  <button class="btn" id="previewBtn">プレビュー</button>
-  <button class="btn pub" id="publishBtn">公開</button>
+  <button class="room on" data-room="top">HOME</button><button class="room" data-room="price">PRICE</button><button class="room" data-room="voice">VOICE</button><button class="room" data-room="gallery">GALLERY</button><button class="room" data-room="sns">SNS</button><button class="room" data-room="map">MAP</button><button class="room" data-room="booking">BOOKING</button><span class="sep"></span>
+  <button class="btn edit" id="editBtn">編集</button><button class="btn" id="previewBtn">プレビュー</button><button class="btn" id="passBtn">PASS変更</button><button class="btn pub" id="publishBtn">公開</button>
 </div>
-
-<button class="bgbtn" id="bgBtn">背景を変更</button>
-<input id="imagePicker" type="file" accept="image/*" hidden>
-<input id="bgPicker" type="file" accept="image/*" hidden>
+<button class="action" id="bgBtn">背景を変更</button><button class="action" id="galleryAddBtn">＋写真追加</button><button class="action" id="bookingMailBtn">送信先設定</button>
+<input id="imagePicker" type="file" accept="image/*" hidden><input id="bgPicker" type="file" accept="image/*" hidden><input id="galleryPicker" type="file" accept="image/*" hidden>
 <div class="tip" id="tip">編集したい文字・画像をタップ</div>
-
-<div class="modalback" id="modal">
-  <div class="editor">
-    <div class="editorhead"><strong id="editorTitle">文字を編集</strong><button class="close" id="closeEditor">×</button></div>
-    <textarea id="textEditor"></textarea>
-    <div class="editrow"><button class="cancel" id="cancelEdit">キャンセル</button><button class="apply" id="applyEdit">反映</button></div>
-  </div>
-</div>
-
-<script src="map-sync.js"></script>
+<div class="modalback" id="modal"><div class="editor"><div class="editorhead"><strong id="editorTitle">文字を編集</strong><button class="close" id="closeEditor">×</button></div><textarea id="textEditor"></textarea><div class="editrow"><button class="cancel" id="cancelEdit">キャンセル</button><button class="apply" id="applyEdit">反映</button></div></div></div>
+<div class="lock" id="lock"><div class="lockbox"><h1>HORIYUME ADMIN</h1><p id="lockText"></p><input id="passInput" maxlength="4" autocomplete="off" inputmode="text" placeholder="••••"><button id="unlockBtn"></button><div class="lockmsg" id="lockMsg"></div></div></div>
+<script src="map-sync.js"></script><script src="horiyume-runtime.js"></script>
 <script>
-const frame=document.getElementById("site"),editBtn=document.getElementById("editBtn"),tip=document.getElementById("tip"),modal=document.getElementById("modal"),textEditor=document.getElementById("textEditor"),imagePicker=document.getElementById("imagePicker"),bgPicker=document.getElementById("bgPicker"),bgBtn=document.getElementById("bgBtn");
-const CURRENT_BG="https://d2jqrm6oza8nb6.cloudfront.net/datasets/a245aeb6-7b47-4216-9456-96b93535f841.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMGI3NWRhNWM3YWRkNzJkMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDQxMzc4OH0.Z5ZR1AjrehwXqwFQWQNJnesJDXfgIgViNW7CDif_Z7s";
-let editMode=false,currentRoom="top",selectedText=null,pendingImage=null;
+const frame=document.getElementById('site'),editBtn=document.getElementById('editBtn'),tip=document.getElementById('tip'),modal=document.getElementById('modal'),textEditor=document.getElementById('textEditor'),imagePicker=document.getElementById('imagePicker'),bgPicker=document.getElementById('bgPicker'),galleryPicker=document.getElementById('galleryPicker'),bgBtn=document.getElementById('bgBtn'),galleryAddBtn=document.getElementById('galleryAddBtn'),bookingMailBtn=document.getElementById('bookingMailBtn');
+let editMode=false,currentRoom='top',selectedText=null,pendingImage=null,docBound=false;
 function d(){return frame.contentDocument}
-function esc(v){return String(v).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
-function applyIdentity(){
- const x=d();if(!x)return;
- x.title="Artist — 彫夢 / HORIYUME";
- x.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&el.textContent){el.textContent=el.textContent.replace(/KOKURYU TATTOO STUDIO/g,"HORIYUME").replace(/KOKURYU/g,"HORIYUME")}});
-}
-function applyLook(){
- const x=d();if(!x)return;
- applyIdentity();
- let s=x.getElementById("admin-current-public-bg");if(!s){s=x.createElement("style");s.id="admin-current-public-bg";x.head.appendChild(s)}
- const b=localStorage.getItem("kokuryuAdminBg")||CURRENT_BG;
- s.textContent='.bg{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.34)),url("'+b+'") center top / cover no-repeat !important;}';
- const saved=JSON.parse(localStorage.getItem("kokuryuAdminCopy")||"null");
- if(saved){const l=x.querySelector(".hero-info__lead"),c=x.querySelector(".hero-info__copy");if(l)l.textContent=saved.lead||"";if(c)c.innerHTML=(saved.copy||"").split("\n").map(esc).join("<br>")}
- if(window.HoriyumeStore)window.HoriyumeStore.applyToFrame(frame);
-}
-function scope(){
- const x=d();if(!x)return null;
- return currentRoom==="top"?x.getElementById("page-top"):x.getElementById("page-"+currentRoom)
-}
-function gotoRoom(room){
- currentRoom=room;
- document.querySelectorAll(".room").forEach(b=>b.classList.toggle("on",b.dataset.room===room));
- const x=d();if(x){const r=x.getElementById("nav-"+room);if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
- if(room==="map"&&window.HoriyumeStore)window.HoriyumeStore.applyToFrame(frame);
- bgBtn.classList.toggle("show",editMode&&room==="top");
- if(editMode)setTimeout(markTargets,30);else clearTargets();
-}
-function clearTargets(){
- const x=d();if(!x)return;
- x.querySelectorAll("[data-admin-target]").forEach(el=>{
-   el.removeAttribute("data-admin-target");el.style.outline="";el.style.outlineOffset="";el.style.cursor="";
- });
-}
-function markTargets(){
- clearTargets();const s=scope();if(!s)return;
- s.querySelectorAll("h1,h2,h3,p,b,small,span,.value,.label").forEach(el=>{
-   if(el.children.length===0&&String(el.textContent||"").trim()){
-     el.dataset.adminTarget="text";el.style.outline="1px dashed rgba(199,154,75,.72)";el.style.outlineOffset="3px";el.style.cursor="pointer";
-   }
- });
- s.querySelectorAll("img").forEach(el=>{
-   el.dataset.adminTarget="image";el.style.outline="2px dashed rgba(183,24,29,.82)";el.style.outlineOffset="3px";el.style.cursor="pointer";
- });
- s.addEventListener("click",handleTarget,true);
-}
-function handleTarget(e){
- if(!editMode)return;
- const el=e.target;
- if(!el||!el.dataset.adminTarget)return;
- e.preventDefault();e.stopPropagation();
- if(el.dataset.adminTarget==="image"){pendingImage=el;imagePicker.click();return}
- selectedText=el;textEditor.value=el.innerText||el.textContent||"";document.getElementById("editorTitle").textContent="文字を編集";modal.classList.add("open");setTimeout(()=>textEditor.focus(),50);
-}
-function closeEditor(){modal.classList.remove("open");selectedText=null}
-function persistMapSettings(){
- const x=d();if(!x||!window.HoriyumeStore)return;
- const address=x.getElementById("addressText"),hours=x.getElementById("hoursText"),holiday=x.getElementById("holidayText");
- const clean=(el,placeholder)=>{const v=String(el&&el.innerText||"").trim();return(!v||v===placeholder||v.includes("未登録"))?"":v};
- const addressValue=clean(address,"住所未登録");
- window.HoriyumeStore.write({
-   address:addressValue,
-   businessHours:clean(hours,"営業時間未登録"),
-   holiday:clean(holiday,"定休日未登録"),
-   mapQuery:addressValue
- });
- window.HoriyumeStore.applyToFrame(frame);
-}
-document.querySelectorAll(".room").forEach(b=>b.onclick=()=>gotoRoom(b.dataset.room));
-editBtn.onclick=()=>{
- editMode=!editMode;editBtn.classList.toggle("on",editMode);tip.classList.toggle("show",editMode);bgBtn.classList.toggle("show",editMode&&currentRoom==="top");
- if(editMode)markTargets();else clearTargets();
-};
-document.getElementById("previewBtn").onclick=()=>{editMode=false;editBtn.classList.remove("on");tip.classList.remove("show");bgBtn.classList.remove("show");clearTargets();closeEditor()};
-document.getElementById("closeEditor").onclick=closeEditor;document.getElementById("cancelEdit").onclick=closeEditor;
-document.getElementById("applyEdit").onclick=()=>{
- if(selectedText){selectedText.innerHTML=esc(textEditor.value).replace(/\n/g,"<br>")}
- if(currentRoom==="top"){
-   const x=d(),lead=x.querySelector(".hero-info__lead"),copy=x.querySelector(".hero-info__copy");
-   localStorage.setItem("kokuryuAdminCopy",JSON.stringify({lead:lead?lead.innerText:"",copy:copy?copy.innerText:""}));
- }
- if(currentRoom==="map")persistMapSettings();
- closeEditor();
-};
-imagePicker.onchange=()=>{
- const f=imagePicker.files&&imagePicker.files[0];if(!f||!pendingImage)return;
- const r=new FileReader();r.onload=()=>{pendingImage.src=r.result;pendingImage=null};r.readAsDataURL(f);
-};
-bgBtn.onclick=()=>bgPicker.click();
-bgPicker.onchange=()=>{
- const f=bgPicker.files&&bgPicker.files[0];if(!f)return;
- const r=new FileReader();r.onload=()=>{localStorage.setItem("kokuryuAdminBg",r.result);applyLook()};r.readAsDataURL(f);
-};
-document.getElementById("publishBtn").onclick=()=>alert("本番公開は管理バックエンド接続後に有効化します。今はプレビューです。");
-frame.addEventListener("load",()=>{applyLook();gotoRoom("top")});
+function cfg(){return HoriyumeRuntime.draft()}
+function save(next){return HoriyumeRuntime.saveDraft(next)}
+function applyDraft(){HoriyumeRuntime.applyToFrame(frame,cfg());if(window.HoriyumeStore)HoriyumeStore.applyToFrame(frame)}
+function refreshActions(){bgBtn.classList.toggle('show',editMode&&currentRoom==='top');galleryAddBtn.classList.toggle('show',editMode&&currentRoom==='gallery');bookingMailBtn.classList.toggle('show',editMode&&currentRoom==='booking')}
+function scope(){return HoriyumeRuntime.roomRoot(d(),currentRoom)}
+function gotoRoom(room){currentRoom=room;document.querySelectorAll('.room').forEach(b=>b.classList.toggle('on',b.dataset.room===room));const x=d();if(x){const r=x.getElementById('nav-'+room);if(r){r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}))}}applyDraft();refreshActions();if(editMode)setTimeout(markTargets,30);else clearTargets()}
+function clearTargets(){const x=d();if(!x)return;x.querySelectorAll('[data-admin-target]').forEach(el=>{el.removeAttribute('data-admin-target');el.style.outline='';el.style.outlineOffset='';el.style.cursor=''})}
+function markTargets(){clearTargets();const x=d(),s=scope();if(!x||!s)return;HoriyumeRuntime.assignKeys(x);HoriyumeRuntime.textTargets(s).forEach(el=>{el.dataset.adminTarget='text';el.style.outline='1px dashed rgba(199,154,75,.72)';el.style.outlineOffset='3px';el.style.cursor='pointer'});HoriyumeRuntime.imageTargets(s).forEach(el=>{el.dataset.adminTarget='image';el.style.outline='2px dashed rgba(183,24,29,.82)';el.style.outlineOffset='3px';el.style.cursor='pointer'})}
+function handleTarget(e){if(!editMode)return;const el=e.target;if(!el||!el.dataset.adminTarget)return;e.preventDefault();e.stopPropagation();if(el.dataset.adminTarget==='image'){pendingImage=el;imagePicker.click();return}selectedText=el;textEditor.value=el.innerText||el.textContent||'';modal.classList.add('open');setTimeout(()=>textEditor.focus(),30)}
+function closeEditor(){modal.classList.remove('open');selectedText=null}
+function captureMap(next){const x=d(),clean=(id)=>String(x.getElementById(id)?.innerText||'').trim().replace(/^(住所|営業時間|定休日)未登録$/,'');const address=clean('addressText');next.storeSettings={address,businessHours:clean('hoursText'),holiday:clean('holidayText'),mapQuery:address};return next}
+function compress(file,max=1600,quality=.78){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(Math.max(w,h)>max){const s=max/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s)}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',quality))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+document.querySelectorAll('.room').forEach(b=>b.onclick=()=>gotoRoom(b.dataset.room));
+editBtn.onclick=()=>{editMode=!editMode;editBtn.classList.toggle('on',editMode);tip.classList.toggle('show',editMode);refreshActions();if(editMode)markTargets();else clearTargets()};
+document.getElementById('previewBtn').onclick=()=>{editMode=false;editBtn.classList.remove('on');tip.classList.remove('show');clearTargets();refreshActions();closeEditor();applyDraft()};
+document.getElementById('closeEditor').onclick=closeEditor;document.getElementById('cancelEdit').onclick=closeEditor;
+document.getElementById('applyEdit').onclick=()=>{if(!selectedText)return;const key=selectedText.dataset.horiyumeKey;if(!key)return;const next=cfg();next.textEdits[key]=textEditor.value;selectedText.innerHTML=textEditor.value.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/\n/g,'<br>');if(currentRoom==='map')captureMap(next);save(next);closeEditor();applyDraft();if(editMode)markTargets()};
+imagePicker.onchange=async()=>{const f=imagePicker.files&&imagePicker.files[0];if(!f||!pendingImage)return;const data=await compress(f);const key=pendingImage.dataset.horiyumeKey;const next=cfg();if(key)next.imageEdits[key]=data;save(next);pendingImage=null;imagePicker.value='';applyDraft();if(editMode)markTargets()};
+bgBtn.onclick=()=>bgPicker.click();bgPicker.onchange=async()=>{const f=bgPicker.files&&bgPicker.files[0];if(!f)return;const next=cfg();next.background=await compress(f,2000,.8);save(next);bgPicker.value='';applyDraft()};
+galleryAddBtn.onclick=()=>galleryPicker.click();galleryPicker.onchange=async()=>{const f=galleryPicker.files&&galleryPicker.files[0];if(!f)return;const next=cfg();next.galleryExtraImages=next.galleryExtraImages||[];next.galleryExtraImages.push(await compress(f));save(next);galleryPicker.value='';applyDraft();if(editMode)markTargets()};
+bookingMailBtn.onclick=()=>{const next=cfg();const v=prompt('予約フォームの送信先メールアドレス',next.bookingEmail||'');if(v===null)return;next.bookingEmail=String(v).trim();save(next);applyDraft()};
+document.getElementById('publishBtn').onclick=()=>{if(currentRoom==='map'){const next=captureMap(cfg());save(next)}HoriyumeRuntime.publish(cfg());applyDraft();alert('公開設定を保存しました。公開ページへ反映済みです。')};
+document.getElementById('passBtn').onclick=async()=>{const old=prompt('現在の4文字パスワード');if(old===null)return;if(!(await HoriyumeRuntime.checkPass(old))){alert('現在のパスワードが違います');return}const np=prompt('新しい4文字の英数字');if(np===null)return;try{await HoriyumeRuntime.setPass(np);alert('パスワードを変更しました')}catch(e){alert(e.message)}};
+frame.addEventListener('load',()=>{const x=d();if(x&&!docBound){x.addEventListener('click',handleTarget,true);docBound=true}applyDraft();gotoRoom('top')});
+const lock=document.getElementById('lock'),passInput=document.getElementById('passInput'),unlockBtn=document.getElementById('unlockBtn'),lockText=document.getElementById('lockText'),lockMsg=document.getElementById('lockMsg');
+function renderLock(){const setup=!HoriyumeRuntime.hasPass();lockText.textContent=setup?'初回設定です。4文字の英数字パスワードを登録してください。':'4文字パスワードを入力してください。';unlockBtn.textContent=setup?'パスワードを登録':'管理画面を開く'}
+renderLock();unlockBtn.onclick=async()=>{lockMsg.textContent='';const p=passInput.value.trim();try{if(!HoriyumeRuntime.hasPass()){await HoriyumeRuntime.setPass(p);lock.classList.add('hide');return}if(await HoriyumeRuntime.checkPass(p)){lock.classList.add('hide')}else lockMsg.textContent='パスワードが違います'}catch(e){lockMsg.textContent=e.message}};passInput.addEventListener('keydown',e=>{if(e.key==='Enter')unlockBtn.click()});
 </script>
 </body>
 </html>
